@@ -199,7 +199,7 @@ void part2()
 		cx = nx;
 		cy = ny;
 
-		/*
+
 		system("cls");
 		for (int y = 0; y < height; y++)
 		{
@@ -213,11 +213,11 @@ void part2()
 					map[index(x, y)] = ' ';
 				}
 			}
-			std::cout << "\n";
+			std::cout << std::endl;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		*/
 	}
+	system("cls");
 	std::cout << nx << " " << ny << "\n";
 }
 

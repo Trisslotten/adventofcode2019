@@ -13,7 +13,7 @@ struct Instruction
 	uint8_t modes[3] = { 0,0,0 };
 };
 
-Instruction parseInstruction(int64_t inst)
+inline Instruction parseInstruction(int64_t inst)
 {
 	Instruction result;
 
@@ -32,7 +32,7 @@ Instruction parseInstruction(int64_t inst)
 class Program
 {
 public:
-	void run();
+	int64_t run();
 
 	void setCode(const std::vector<int64_t>& code);
 	void setInput(int64_t input)
