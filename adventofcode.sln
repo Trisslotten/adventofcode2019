@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "adventofcode11", "adventofc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "adventofcode12", "adventofcode12\adventofcode12.vcxproj", "{8E77CAF6-868A-446E-8668-A4EB1C333E86}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "adventofcode13", "adventofcode13\adventofcode13.vcxproj", "{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -131,6 +133,14 @@ Global
 		{8E77CAF6-868A-446E-8668-A4EB1C333E86}.Release|x64.Build.0 = Release|x64
 		{8E77CAF6-868A-446E-8668-A4EB1C333E86}.Release|x86.ActiveCfg = Release|Win32
 		{8E77CAF6-868A-446E-8668-A4EB1C333E86}.Release|x86.Build.0 = Release|Win32
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Debug|x64.ActiveCfg = Debug|x64
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Debug|x64.Build.0 = Debug|x64
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Debug|x86.ActiveCfg = Debug|Win32
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Debug|x86.Build.0 = Debug|Win32
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Release|x64.ActiveCfg = Release|x64
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Release|x64.Build.0 = Release|x64
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Release|x86.ActiveCfg = Release|Win32
+		{14CD8FE6-DFBC-477F-ABA1-5D3ED65BEA49}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
