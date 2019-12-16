@@ -61,18 +61,36 @@ void main()
 	int px = 0;
 	int py = 0;
 	int move_dir = 0;
+	int state = 0;
 	bool running = true;
 	while (running)
 	{
-		uint64_t r_hash;
-		std::tie(r_hash, move_dir) = findNextEmpty(px, py);
-		hash = r_hash;
-		if (hash == 10000)
+		if (state == 0)
 		{
-			break;
+			move_dir = dirNextEmpty(px, py);
 		}
-		tx = x;
-		ty = y;
+		else if (state == 1)
+		{
+			move_dir = dirCenter(px, py);
+		}
+		else if(state == 2)
+		{
+			move_dir = dirOxygen(px, py);
+			moves++;
+		}
+		if (move_dir == 10000)
+		{
+			if (state == 0)
+			{
+				state++;
+				continue;
+			}
+			else if(state == 2)
+			{
+				break;
+			}
+		}
+
 		program.setInput(dirs[move_dir]);
 		auto output = program.run();
 
@@ -105,13 +123,160 @@ void main()
 			px = x;
 			py = y;
 		}
+
+		if (px == 0 && py == 0 && state == 1)
+		{
+			state++;
+		}
 	}
 	printMap(px, py, 0, 0);
 
-
+	std::cout << moves-1 << "\n";
 }
 
-std::pair<uint64_t, int> findNextEmpty(int px, int py)
+int dirOxygen(int px, int py)
+{
+	std::set<uint64_t> looked_at;
+
+	std::queue<std::pair<uint64_t, int>> to_look_from;
+
+	x = px;
+	y = py;
+	looked_at.insert(hash);
+
+	int cx = px;
+	int cy = py;
+	int curr_first_dir = 0;
+	bool starting = true;
+	bool found = false;
+	while (!found)
+	{
+		int rx = 0;
+		int ry = -1;
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = cx + rx;
+			int ny = cy + ry;
+
+			x = nx;
+			y = ny;
+
+			if (starting)
+			{
+				curr_first_dir = i;
+			}
+
+			if (looked_at.count(hash) == 0)
+			{
+				looked_at.insert(hash);
+				auto iter = map.find(hash);
+				if (iter == map.end())
+				{
+					return 10000;
+				}
+				else
+				{
+					if (iter->second == 2)
+					{
+						return curr_first_dir;
+					}
+
+					if (iter->second == 1 || iter->second == 2)
+					{
+						x = nx;
+						y = ny;
+						to_look_from.push(std::make_pair(hash, curr_first_dir));
+					}
+				}
+			}
+
+			std::swap(rx, ry);
+			ry = -ry;
+		}
+		starting = false;
+		if (to_look_from.empty())
+		{
+			return 10000;
+		}
+		std::tie(hash, curr_first_dir) = to_look_from.front();
+		to_look_from.pop();
+		cx = x;
+		cy = y;
+	}
+}
+
+int dirCenter(int px, int py)
+{
+	std::set<uint64_t> looked_at;
+
+	std::queue<std::pair<uint64_t, int>> to_look_from;
+
+	x = px;
+	y = py;
+	looked_at.insert(hash);
+
+	int cx = px;
+	int cy = py;
+	int curr_first_dir = 0;
+	bool starting = true;
+	bool found = false;
+	while (!found)
+	{
+		int rx = 0;
+		int ry = -1;
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = cx + rx;
+			int ny = cy + ry;
+
+			x = nx;
+			y = ny;
+
+			if (starting)
+			{
+				curr_first_dir = i;
+			}
+
+			if (nx == 0 && ny == 0)
+			{
+				return curr_first_dir;
+			}
+
+			if (looked_at.count(hash) == 0)
+			{
+				looked_at.insert(hash);
+				auto iter = map.find(hash);
+				if (iter == map.end())
+				{
+					return 10000;
+				}
+				else
+				{
+					if (iter->second == 1 || iter->second == 2)
+					{
+						x = nx;
+						y = ny;
+						to_look_from.push(std::make_pair(hash, curr_first_dir));
+					}
+				}
+			}
+
+			std::swap(rx, ry);
+			ry = -ry;
+		}
+		starting = false;
+		if (to_look_from.empty())
+		{
+			return 10000;
+		}
+		std::tie(hash, curr_first_dir) = to_look_from.front();
+		to_look_from.pop();
+		cx = x;
+		cy = y;
+	}
+}
+
+int dirNextEmpty(int px, int py)
 {
 	std::set<uint64_t> looked_at;
 
@@ -149,7 +314,7 @@ std::pair<uint64_t, int> findNextEmpty(int px, int py)
 				auto iter = map.find(hash);
 				if (iter == map.end())
 				{
-					return std::make_pair(hash, curr_first_dir);
+					return curr_first_dir;
 				}
 				else
 				{
@@ -162,22 +327,16 @@ std::pair<uint64_t, int> findNextEmpty(int px, int py)
 				}
 			}
 
-			//printMap2(px, py, cx, cy, nx, ny);
-
-			//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
 			std::swap(rx, ry);
 			ry = -ry;
 		}
 		starting = false;
 		if (to_look_from.empty())
 		{
-			return { 10000, curr_first_dir };
+			return 10000;
 		}
-		uint64_t r_hash;
-		std::tie(r_hash, curr_first_dir) = to_look_from.front();
+		std::tie(hash, curr_first_dir) = to_look_from.front();
 		to_look_from.pop();
-		hash = r_hash;
 		cx = x;
 		cy = y;
 	}
