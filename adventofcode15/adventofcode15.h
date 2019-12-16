@@ -9,3 +9,5 @@ int dirCenter(int px, int py);
 int dirOxygen(int px, int py);
 
 void printMap2(int px, int py, int lx, int ly, int tx, int ty);
+
+bool filled();

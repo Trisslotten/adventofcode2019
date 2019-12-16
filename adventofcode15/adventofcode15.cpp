@@ -73,7 +73,7 @@ void main()
 		{
 			move_dir = dirCenter(px, py);
 		}
-		else if(state == 2)
+		else if (state == 2)
 		{
 			move_dir = dirOxygen(px, py);
 			moves++;
@@ -85,7 +85,7 @@ void main()
 				state++;
 				continue;
 			}
-			else if(state == 2)
+			else if (state == 2)
 			{
 				break;
 			}
@@ -130,8 +130,54 @@ void main()
 		}
 	}
 	printMap(px, py, 0, 0);
+	std::cout << "part1: " << moves - 1 << "\n";
 
-	std::cout << moves-1 << "\n";
+	auto temp = map;
+	int minutes = 0;
+	while (running)
+	{
+		for (auto& iter : map)
+		{
+			if (iter.second == 2)
+			{
+				int rx = 0;
+				int ry = -1;
+				for (int i = 0; i < 4; i++)
+				{
+					hash = iter.first;
+					x += rx;
+					y += ry;
+					auto adj = map.find(hash);
+					if (adj != map.end() && adj->second == 1)
+					{
+						temp[hash] = 2;
+					}
+					std::swap(rx, ry);
+					ry = -ry;
+				}
+			}
+		}
+		map = temp;
+
+		if (filled())
+		{
+			running = false;
+		}
+		minutes++;
+	}
+	std::cout << "part2: " << minutes << "\n";
+}
+
+bool filled()
+{
+	for (auto& iter : map)
+	{
+		if (iter.second == 1)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 int dirOxygen(int px, int py)
@@ -307,7 +353,7 @@ int dirNextEmpty(int px, int py)
 			{
 				curr_first_dir = i;
 			}
-			
+
 			if (looked_at.count(hash) == 0)
 			{
 				looked_at.insert(hash);
