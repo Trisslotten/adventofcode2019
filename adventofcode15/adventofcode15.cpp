@@ -7,6 +7,7 @@
 #include "adventofcode15.h"
 #include <set>
 #include <queue>
+#include <thread>
 
 static union
 {
@@ -57,12 +58,9 @@ void main()
 	map[hash] = 1;
 
 	int moves = 0;
-	int tx = 0;
-	int ty = 0;
 	int px = 0;
 	int py = 0;
 	int move_dir = 0;
-	bool found = false;
 	bool running = true;
 	while (running)
 	{
@@ -71,13 +69,10 @@ void main()
 		hash = r_hash;
 		if (hash == 10000)
 		{
-			//break;
+			break;
 		}
 		tx = x;
 		ty = y;
-
-		// set dir from target
-
 		program.setInput(dirs[move_dir]);
 		auto output = program.run();
 
@@ -102,7 +97,6 @@ void main()
 			map[hash] = 1;
 			px = x;
 			py = y;
-			moves++;
 		}
 		else if (output == 2)
 		{
@@ -110,22 +104,11 @@ void main()
 			map[hash] = 2;
 			px = x;
 			py = y;
-			//break;
-			found = true;
-			moves++;
 		}
-
-
-		if (moves % 10 == 0 || found)
-		{
-			printMap(px, py, tx, ty);
-		}
-
-		std::cout << tx << ", " << ty << ": " << move_dir << "\n";
 	}
+	printMap(px, py, 0, 0);
 
 
-	std::cout << moves << "\n";
 }
 
 std::pair<uint64_t, int> findNextEmpty(int px, int py)
@@ -152,11 +135,6 @@ std::pair<uint64_t, int> findNextEmpty(int px, int py)
 			int nx = cx + rx;
 			int ny = cy + ry;
 
-			if (nx == -19 && ny == -20)
-			{
-				std::cout << "pos\n";
-			}
-
 			x = nx;
 			y = ny;
 
@@ -164,14 +142,14 @@ std::pair<uint64_t, int> findNextEmpty(int px, int py)
 			{
 				curr_first_dir = i;
 			}
-
+			
 			if (looked_at.count(hash) == 0)
 			{
 				looked_at.insert(hash);
 				auto iter = map.find(hash);
 				if (iter == map.end())
 				{
-					return { hash, curr_first_dir };
+					return std::make_pair(hash, curr_first_dir);
 				}
 				else
 				{
@@ -179,10 +157,15 @@ std::pair<uint64_t, int> findNextEmpty(int px, int py)
 					{
 						x = nx;
 						y = ny;
-						to_look_from.push({ hash, curr_first_dir });
+						to_look_from.push(std::make_pair(hash, curr_first_dir));
 					}
 				}
 			}
+
+			//printMap2(px, py, cx, cy, nx, ny);
+
+			//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
 			std::swap(rx, ry);
 			ry = -ry;
 		}
@@ -192,11 +175,61 @@ std::pair<uint64_t, int> findNextEmpty(int px, int py)
 			return { 10000, curr_first_dir };
 		}
 		uint64_t r_hash;
-		std::tie(r_hash, curr_first_dir) = to_look_from.back();
+		std::tie(r_hash, curr_first_dir) = to_look_from.front();
 		to_look_from.pop();
 		hash = r_hash;
 		cx = x;
 		cy = y;
+	}
+}
+
+void printMap2(int px, int py, int lx, int ly, int tx, int ty)
+{
+	system("cls");
+	int range = 40;
+	for (int i = -range; i <= range; i++)
+	{
+		for (int j = -range; j <= range; j++)
+		{
+			x = j;
+			y = i;
+			if (px == j && py == i)
+			{
+				std::cout << "@";
+			}
+			else if (tx == j && ty == i)
+			{
+				std::cout << "X";
+			}
+			else if (lx == j && ly == i)
+			{
+				std::cout << "?";
+			}
+			else
+			{
+				auto iter = map.find(hash);
+				if (iter != map.end())
+				{
+					switch (iter->second)
+					{
+					case 0:
+						std::cout << '#';
+						break;
+					case 1:
+						std::cout << '.';
+						break;
+					case 2:
+						std::cout << 'O';
+						break;
+					}
+				}
+				else
+				{
+					std::cout << ' ';
+				}
+			}
+		}
+		std::cout << "\n";
 	}
 }
 
