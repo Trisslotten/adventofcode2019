@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="adventofcode16.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="adventofcode16.h">
+    <ClInclude Include="program.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="timer.hpp">
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="program.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
+    </ClCompile>
+    <ClCompile Include="adventofcode19.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
